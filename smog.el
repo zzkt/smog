@@ -5,6 +5,7 @@
 ;; Author: nik gaffney <nik@fo.am>
 ;; Created: 2020-02-02
 ;; Version: 0.1
+;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: tools, style, readability, prose
 ;; URL: https://github.com/zzkt/smog
 
@@ -50,7 +51,7 @@
   :type '(string)
   :group 'smog)
 
-(defcustom smog-reference "* Reference
+(defcustom smog-reference "\n* Reference
 
 ** Kincaid formula
 
