@@ -3,7 +3,7 @@
 
 A simple way to analyse the writing style, word use and readability of prose in Emacs. 
 
-It can be used by calling =smog-check-buffer=
+It can be used by calling =smog-check-buffer= or =smog-check-region= on the selected region.
 
 The analysis is produced via the command line tool =style=. It performs several [[https://en.wikipedia.org/wiki/Readability][readability]] tests on the text including; [[https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests][Flesch-Kincaid readability tests]], [[https://en.wikipedia.org/wiki/Automated_readability_index][Automated Readability Index]] (aka “ARI”), [[https://en.wikipedia.org/wiki/Coleman%E2%80%93Liau_index][Coleman-Liau Index]], [[https://en.wikipedia.org/wiki/Gunning_fog_index][Gunning fog index]] (aka "Fog Index"), and [[https://en.wikipedia.org/wiki/SMOG][SMOG Index]] (aka "SMOG-Grading", “Simple Measure Of Gobbledygook“). It also summarises word usage and provides information about sentence and paragraph structure. The output is presented as a summary, so if you are looking for more specific, or continuous feedback on style and/or grammar then using =flycheck= with [[http://proselint.com/][proselint]] might be more suitable.
 
@@ -47,8 +47,8 @@ e.g. to analyse a text in German and show sentences longer than 23 words…
 
 ** Analyse surface detail
 
-=M-x smog-check-buffer=
- 
+=M-x smog-check-buffer= and/or =M-x smog-check-region=
+
 ** Further 
   - [[https://wiki.christophchamp.com/index.php?title=Style_and_Diction][style]] is written by Michael Haardt with contributions from Jason Petrone, Uschi Stegemeier and Hans Lodder
   - [[https://files.eric.ed.gov/fulltext/ED506404.pdf][The Classic Readability Studies]]. William H.DuBay, Editor
