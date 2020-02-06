@@ -55,37 +55,37 @@
 
 ** Kincaid formula
 
-The Kincaid Formula has been developed for Navy training manuals, that ranged in difficulty from 5.5 to 16.3. It is probably best applied to technical documents, because it is based on adult training manuals rather than school book text. Dialogs (often found in fictional texts) are usually a series of short sentences, which lowers the score. On the other hand, scientific texts with many long scientific terms are rated higher, although they are not necessarily harder to read for people who are familiar with those terms.
+The <<<Kincaid>>> Formula has been developed for Navy training manuals, that ranged in difficulty from 5.5 to 16.3. It is probably best applied to technical documents, because it is based on adult training manuals rather than school book text. Dialogs (often found in fictional texts) are usually a series of short sentences, which lowers the score. On the other hand, scientific texts with many long scientific terms are rated higher, although they are not necessarily harder to read for people who are familiar with those terms.
 
 *Kincaid* = 11.8*syllables/wds+0.39*wds/sentences-15.59
 
-** Automated Readability Index
+** Automated Readability Index (ARI)
 
-The Automated Readability Index is typically higher than Kincaid and Cole- man-Liau, but lower than Flesch.
+The Automated Readability Index (<<<ARI>>>) is typically higher than Kincaid and Coleman-Liau, but lower than Flesch.
 
 *ARI* = 4.71*chars/wds+0.5*wds/sentences-21.43
 
 ** Coleman-Liau Formula
 
-The Coleman-Liau Formula usually gives a lower grade than Kincaid, ARI and Flesch when applied to technical documents.
+The <<<Coleman-Liau>>> Formula usually gives a lower grade than Kincaid, ARI and Flesch when applied to technical documents.
 
 *Coleman-Liau* = 5.88*chars/wds-29.5*sent/wds-15.8
 
-** Flesch reading easy formula
+**  Flesch Reading Ease Formula
 
-Flesch Reading Ease Formula has been developed by Flesch in 1948 and it is based on school text covering grade 3 to 12. It is wide spread, especially in the USA, because of good results and simple computation. The index is usually between 0 (hard) and 100 (easy), standard English documents averages approximately 60 to 70. Applying it to German documents does not deliver good results because of the different language structure.
+Flesch Reading Ease Formula (<<<Flesch Index>>>) has been developed by Flesch in 1948 and it is based on school text covering grade 3 to 12. It is wide spread, especially in the USA, because of good results and simple computation. The index is usually between 0 (hard) and 100 (easy), standard English documents averages approximately 60 to 70. Applying it to German documents does not deliver good results because of the different language structure.
 
 *Flesch Index* = 206.835-84.6*syll/wds-1.015*wds/sent
 
 ** Fog Index
 
-The Fog index has been developed by Robert Gunning. Its value is a school grade. The “ideal” Fog Index level is 7 or 8. A level above 12 indicates the writing sample is too hard for most people to read. Only use it on texts of at least hundred words to get meaningful results. Note that a correct implementation would not count words of three or more syllables that are proper names, combinations of easy words, or made three syllables by suffixes such as -ed, -es, or -ing.
+The <<<Fog index>>> has been developed by Robert Gunning. Its value is a school grade. The “ideal” Fog Index level is 7 or 8. A level above 12 indicates the writing sample is too hard for most people to read. Only use it on texts of at least hundred words to get meaningful results. Note that a correct implementation would not count words of three or more syllables that are proper names, combinations of easy words, or made three syllables by suffixes such as -ed, -es, or -ing.
 
 *Fog Index* = 0.4*(wds/sent+100*((wds >= 3 syll)/wds))
 
 ** Lix formula
 
-The Lix formula developed by Bjornsson from Sweden is very simple and employs a mapping table as well:
+The <<<Lix>>> formula developed by Bjornsson from Sweden is very simple and employs a mapping table as well:
 
 *Lix* = wds/sent+100*(wds >= 6 char)/wds
 
@@ -94,7 +94,7 @@ The Lix formula developed by Bjornsson from Sweden is very simple and employs a 
 
 ** SMOG-Grading
 
-The SMOG-Grading for English texts has been developed by McLaughlin in 1969. Its result is aschool grade.
+The <<<SMOG-Grading>>> for English texts has been developed by McLaughlin in 1969. Its result is aschool grade.
 
 *SMOG-Grading* = square root of (((wds >= 3 syll)/sent)*30) + 3
 
@@ -102,7 +102,7 @@ It has been adapted to German by Bamberger & Vanecek in 1984, who changed the co
 
 ** Word usage
 
-The word usage counts are intended to help identify excessive use of particular parts of speech.
+The <<<word usage>>> counts are intended to help identify excessive use of particular parts of speech.
 
 *Verb Phrases*
 
@@ -150,11 +150,44 @@ Further details can be found in the =style(1)= man page.\n"
       ;; output the results and add references (in org-mode if it's available)
       (with-current-buffer smog-output
 	(goto-char (point-min))
-	(insert (format "\n*Style analysis* of \[\[%s\]\[%s\]\] \n\n" smog-target smog-buffer))
+	(insert (format "\n*Style analysis* of the file \[\[%s\]\[%s\]\] \n\n"
+			smog-target smog-buffer))
 	(goto-char (point-max))
 	(insert smog-reference)
 	(when (fboundp 'org-mode)
-	  (org-mode))))))
+	  (progn (org-mode)
+		 (org-update-radio-target-regexp)))))))
+
+;;;###autoload
+(defun smog-check-region ()
+  "Analyse the surface characteristics of a selected region."
+  (interactive)
+  (when (smog--style-installed-p)
+    (let* ((smog-buffer (current-buffer))
+	  (smog-output (get-buffer-create "*Readability*"))
+	  (region-p (use-region-p))
+	   ;; beginning of either buffer or region
+	  (selection-start (if region-p
+			       (region-beginning)
+			     (point-min)))
+	  ;; end of either buffer or region
+	  (selection-end  (if region-p
+			      (region-end)
+			    (point-max))))
+      ;; run the shell command. synchronously.
+      (shell-command-on-region selection-start selection-end
+			       (format "%s" smog-command) smog-output)
+      ;; output the results and add references (in org-mode if it's available)
+      (with-current-buffer smog-output
+	(goto-char (point-min))
+	(insert (format "\n*Style analysis* of %s*%s*\n\n"
+			(if region-p "the selected region of " "") smog-buffer))
+	(goto-char (point-max))
+	(insert smog-reference)
+	(when (fboundp 'org-mode)
+	  (progn (org-mode)
+		 (org-update-radio-target-regexp)))))))
+
 
 (provide 'smog)
 
