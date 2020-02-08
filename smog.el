@@ -71,7 +71,7 @@ The <<<Coleman-Liau>>> Formula usually gives a lower grade than Kincaid, ARI and
 
 *Coleman-Liau* = 5.88*chars/wds-29.5*sent/wds-15.8
 
-**  Flesch Reading Ease Formula
+** Flesch Reading Ease Formula (Flesch Index)
 
 Flesch Reading Ease Formula (<<<Flesch Index>>>) has been developed by Flesch in 1948 and it is based on school text covering grade 3 to 12. It is wide spread, especially in the USA, because of good results and simple computation. The index is usually between 0 (hard) and 100 (easy), standard English documents averages approximately 60 to 70. Applying it to German documents does not deliver good results because of the different language structure.
 

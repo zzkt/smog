@@ -29,9 +29,9 @@ The package can be installed from [[https://melpa.org/][MELPA]] or manually via 
 (use-package smog)
 #+END_SRC
 
-To configure language or output options, =setq= or customize the =readability-command= variable.
+To configure language or output options, =setq= or customize the =smog-command= variable. 
 
-Tthe default language is set to =en= (English) and can be changed to =de= for German or =nl= for Dutch. Details for the various output options can be found via =style -h= or =man style= in your shell of choice.
+The default language is set to =en= (English) and can be changed to =de= for German or =nl= for Dutch. Details for the various output options can be found via =style -h= or =man style= in your shell of choice.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smog
