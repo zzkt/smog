@@ -5,7 +5,7 @@
 ;; Author: nik gaffney <nik@fo.am>
 ;; Created: 2020-02-02
 ;; Version: 0.1
-;; Package-Requires: ((emacs "24.1") (org-mode "8.1"))
+;; Package-Requires: ((emacs "24.1") (org "8.1"))
 ;; Keywords: tools, style, readability, prose
 ;; URL: https://github.com/zzkt/smog
 
