@@ -168,7 +168,7 @@ Further details can be found in the =style(1)= man page.\n"
   (interactive)
   (when (smog--style-installed-p)
     (let* ((smog-buffer (current-buffer))
- 	   (smog-output (get-buffer-create "*Readability*"))
+	   (smog-output (get-buffer-create "*Readability*"))
 	   (region-p (use-region-p))
 	   ;; beginning of either buffer or region
 	   (selection-start (if region-p
