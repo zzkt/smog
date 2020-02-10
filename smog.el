@@ -130,10 +130,9 @@ Further details can be found in the =style(1)= man page.\n"
 
 (defun smog--style-installed-p ()
   "Is the style command installed?"
-  (if (eq 0 (condition-case nil
-		(call-process "style")
-	      (error (message "The program 'style' isn't installed or can't be found."))))
-      t nil))
+  (eq 0 (condition-case nil
+	    (call-process "style")
+	  (error (message "The program 'style' isn't installed or can't be found.")))))
 
 ;;;###autoload
 (defun smog-check-buffer ()
