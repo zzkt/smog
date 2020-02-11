@@ -147,7 +147,7 @@ Further details can be found in the =style(1)= man page.\n"
 	  (smog-target (buffer-file-name (current-buffer))))
       ;; run the shell command. synchronously.
       (shell-command
-       (mapconcat #'shell-quote-argument (list smog-command smog-target) " ")
+       (concat smog-command " " (shell-quote-argument smog-target))
        smog-output)
       ;; output the results and add references (in org-mode if it's available)
       (with-current-buffer smog-output
