@@ -130,10 +130,12 @@ Further details can be found in the =style(1)= man page.\n"
 
 (defun smog--style-installed-p ()
   "Is the style command installed?"
-  (if (eq 0 (condition-case nil
-		(call-process "style")
-	      (error (message "The program 'style' isn't installed or can't be found."))))
-      t nil))
+  (let ((program "style"))
+    (unless (executable-find program)
+      (message "The program 'style' isn't installed or can't be found."))
+    (eq 0 (condition-case nil
+	      (call-process program)
+	    (error (message "The program 'style' test run exit abnormally."))))))
 
 ;;;###autoload
 (defun smog-check-buffer ()
@@ -145,7 +147,8 @@ Further details can be found in the =style(1)= man page.\n"
 	  (smog-target (buffer-file-name (current-buffer))))
       ;; run the shell command. synchronously.
       (shell-command
-       (format "%s '%s'" smog-command smog-target) smog-output)
+       (mapconcat #'shell-quote-argument (list smog-command smog-target) " ")
+       smog-output)
       ;; output the results and add references (in org-mode if it's available)
       (with-current-buffer smog-output
 	(goto-char (point-min))
@@ -168,7 +171,7 @@ Further details can be found in the =style(1)= man page.\n"
   (interactive)
   (when (smog--style-installed-p)
     (let* ((smog-buffer (current-buffer))
- 	   (smog-output (get-buffer-create "*Readability*"))
+	   (smog-output (get-buffer-create "*Readability*"))
 	   (region-p (use-region-p))
 	   ;; beginning of either buffer or region
 	   (selection-start (if region-p
