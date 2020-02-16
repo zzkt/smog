@@ -1,5 +1,7 @@
 
-* Style & readability
+** Style & readability
+
+[[https://melpa.org/#/smog][file:https://melpa.org/packages/smog-badge.svg]]
 
 A simple way to analyse the writing style, word use and readability of prose in Emacs. 
 
