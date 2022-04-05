@@ -3,7 +3,7 @@
 
 [[https://melpa.org/#/smog][file:https://melpa.org/packages/smog-badge.svg]]
 
-A simple way to analyse the writing style, word use and readability of prose in Emacs. 
+A simple way to analyse the writing style, word use and readability of prose in Emacs.
 
 It can be used by calling =smog-check-buffer= or =smog-check-region= on the selected region.
 
@@ -23,15 +23,17 @@ To install on macOS
 brew install style
 #+END_SRC
 
+To install from source, download from http://ftp.gnu.org/gnu/diction/
+
 ** Configure
 
-The package can be installed from [[https://melpa.org/][MELPA]] or manually via [[https://github.com/zzkt/smog][github]].
+The emacs package can be installed from [[https://melpa.org/][MELPA]] or manually via [[https://github.com/zzkt/smog][github]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package smog)
 #+END_SRC
 
-To configure language or output options, =setq= or customize the =smog-command= variable. 
+To configure language or output options, =setq= or customize the =smog-command= variable.
 
 The default language is set to =en= (English) and can be changed to =de= for German or =nl= for Dutch. Details for the various output options can be found via =style -h= or =man style= in your shell of choice.
 
@@ -49,10 +51,9 @@ e.g. to analyse a text in German and show sentences longer than 23 words…
 
 ** Analyse surface detail
 
-=M-x smog-check-buffer= and/or =M-x smog-check-region=
+=M-x smog-check=
 
-** Further 
+** Further
   - [[https://wiki.christophchamp.com/index.php?title=Style_and_Diction][style]] is written by Michael Haardt with contributions from Jason Petrone, Uschi Stegemeier and Hans Lodder
   - [[https://files.eric.ed.gov/fulltext/ED506404.pdf][The Classic Readability Studies]]. William H.DuBay, Editor
   - [[https://en.wikipedia.org/wiki/Asemic_writing][Asemic writing]]
-

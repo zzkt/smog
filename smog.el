@@ -36,7 +36,7 @@
 ;; Measure Of Gobbledygook“). It also summarises word usage and provides
 ;; information about sentence and paragraph structure.
 ;;
-;; M-x smog-check-buffer
+;; M-x smog-check
 
 
 ;;; Code:
@@ -93,7 +93,7 @@ The <<<Lix>>> formula developed by Bjornsson from Sweden is very simple and empl
 
 ** SMOG-Grading
 
-The <<<SMOG-Grading>>> for English texts has been developed by McLaughlin in 1969. Its result is aschool grade.
+The <<<SMOG-Grading>>> for English texts has been developed by McLaughlin in 1969. Its result is a school grade.
 
 *SMOG-Grading* = square root of (((wds >= 3 syll)/sent)*30) + 3
 
@@ -132,12 +132,11 @@ Further details can be found in the =style(1)= man page.\n"
   "Is the style command installed?"
   (let ((program "style"))
     (unless (executable-find program)
-      (message "The program 'style' isn't installed or can't be found."))
+      (message "The program 'style' isn't installed or can't be found.\nTry installing the 'diction' package for your OS or download the source from http://ftp.gnu.org/gnu/diction/"))
     (eq 0 (condition-case nil
 	      (call-process program)
 	    (error (message "The program 'style' test run exit abnormally."))))))
 
-;;;###autoload
 (defun smog-check-buffer ()
   "Analyse the surface characteristics of a buffer."
   (interactive)
@@ -166,8 +165,8 @@ Further details can be found in the =style(1)= man page.\n"
 	  (org-update-radio-target-regexp))))))
 
 ;;;###autoload
-(defun smog-check-region ()
-  "Analyse the surface characteristics of a selected region."
+(defun smog-check ()
+  "Analyse the readability and word use of a selected region or buffer."
   (interactive)
   (when (smog--style-installed-p)
     (let* ((smog-buffer (current-buffer))
