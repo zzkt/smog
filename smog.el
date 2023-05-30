@@ -46,7 +46,18 @@
   :group 'wp)
 
 (defcustom smog-command "style -L en"
-  "The command to use to run style including any flags (see 'style -h' for details)."
+  "The command to use to run style (including any flags).
+
+From GNU style 1.11
+ -L, --language          set the document language.
+ -l, --print-long        print all sentences longer than <length> words
+ -r, --print-ari         print all sentences with an ARI greater than than <ari>
+ -p, --print-passive     print all sentences phrased in the passive voice
+ -N, --print-nom         print all sentences containing nominalizations
+-n, --print-nom-passive print all sentences phrased in the passive voice or
+                         containing nominalizations
+ -h, --help              print this message
+     --version           print the version"
   :type '(string)
   :group 'smog)
 
@@ -134,35 +145,35 @@ Further details can be found in the =style(1)= man page.\n"
     (unless (executable-find program)
       (message "The program 'style' isn't installed or can't be found.\nTry installing the 'diction' package for your OS or download the source from http://ftp.gnu.org/gnu/diction/"))
     (eq 0 (condition-case nil
-	      (call-process program)
-	    (error (message "The program 'style' test run exit abnormally."))))))
+                          (call-process program)
+                          (error (message "The program 'style' test run exit abnormally."))))))
 
 (defun smog-check-buffer ()
   "Analyse the surface characteristics of a buffer."
   (interactive)
   (when (smog--style-installed-p)
     (let ((smog-buffer (current-buffer))
-	  (smog-output (get-buffer-create "*Readability*"))
-	  (smog-target (buffer-file-name (current-buffer))))
+          (smog-output (get-buffer-create "*Readability*"))
+          (smog-target (buffer-file-name (current-buffer))))
       ;; run the shell command. synchronously.
       (shell-command
        (concat smog-command " " (shell-quote-argument smog-target))
        smog-output)
       ;; output the results and add references (in org-mode if it's available)
       (with-current-buffer smog-output
-	(goto-char (point-min))
-	(if (buffer-modified-p smog-buffer)
-	    (insert (format
-		     "\nChanges to the file '%s' have not been saved. Analysis may be inaccurate.\n\n"
-		     smog-target))
-	  (insert (format "\n*Style analysis* of the file \[\[%s\]\[%s\]\] \n\n"
-			  smog-target smog-buffer)))
-	(goto-char (point-max))
-	(insert smog-reference)
-	(when (fboundp 'org-mode)
-	  (org-mode))
-	(when (fboundp 'org-update-radio-target-regexp)
-	  (org-update-radio-target-regexp))))))
+        (goto-char (point-min))
+        (if (buffer-modified-p smog-buffer)
+            (insert (format
+                     "\nChanges to the file '%s' have not been saved. Analysis may be inaccurate.\n\n"
+                     smog-target))
+            (insert (format "\n*Style analysis* of the file \[\[%s\]\[%s\]\] \n\n"
+                            smog-target smog-buffer)))
+        (goto-char (point-max))
+        (insert smog-reference)
+        (when (fboundp 'org-mode)
+          (org-mode))
+        (when (fboundp 'org-update-radio-target-regexp)
+          (org-update-radio-target-regexp))))))
 
 ;;;###autoload
 (defun smog-check ()
@@ -170,30 +181,30 @@ Further details can be found in the =style(1)= man page.\n"
   (interactive)
   (when (smog--style-installed-p)
     (let* ((smog-buffer (current-buffer))
-	   (smog-output (get-buffer-create "*Readability*"))
-	   (region-p (use-region-p))
-	   ;; beginning of either buffer or region
-	   (selection-start (if region-p
-				(region-beginning)
-			      (point-min)))
-	   ;; end of either buffer or region
-	   (selection-end  (if region-p
-			       (region-end)
-			     (point-max))))
+           (smog-output (get-buffer-create "*Readability*"))
+           (region-p (use-region-p))
+           ;; beginning of either buffer or region
+           (selection-start (if region-p
+                                (region-beginning)
+                                (point-min)))
+           ;; end of either buffer or region
+           (selection-end  (if region-p
+                               (region-end)
+                               (point-max))))
       ;; run the shell command. synchronously.
       (shell-command-on-region selection-start selection-end
-			       (format "%s" smog-command) smog-output)
+                               (format "%s" smog-command) smog-output)
       ;; output the results and add references (in org-mode if it's available)
       (with-current-buffer smog-output
-	(goto-char (point-min))
-	(insert (format "\n*Style analysis* of %s*%s*\n\n"
-			(if region-p "the selected region of " "") smog-buffer))
-	(goto-char (point-max))
-	(insert smog-reference)
-	(when (fboundp 'org-mode)
-	  (org-mode))
-	(when (fboundp 'org-update-radio-target-regexp)
-	  (org-update-radio-target-regexp))))))
+        (goto-char (point-min))
+        (insert (format "\n*Style analysis* of %s*%s*\n\n"
+                        (if region-p "the selected region of " "") smog-buffer))
+        (goto-char (point-max))
+        (insert smog-reference)
+        (when (fboundp 'org-mode)
+          (org-mode))
+        (when (fboundp 'org-update-radio-target-regexp)
+          (org-update-radio-target-regexp))))))
 
 (provide 'smog)
 
